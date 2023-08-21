@@ -5,6 +5,14 @@
         "**/bower_components": true
     },
     "files.associations": {
-        "bootloader.h": "c"
-    }
+        "bootloader.h": "c",
+        "motors.h": "c",
+        "config.h": "c",
+        "stdint.h": "c",
+        "nrf24l01.h": "c",
+        "stdbool.h": "c",
+        "uart1.h": "c"
+    },
+    "C_Cpp.errorSquiggles": "enabled",
+    "C_Cpp.default.configurationProvider": "ms-vscode.cpptools-tools"
 }
