@@ -48,6 +48,7 @@
 #define MOTORS_PWM_BITS           8
 #define MOTORS_PWM_PERIOD         ((1<<MOTORS_PWM_BITS) - 1)
 #define MOTORS_PWM_PRESCALE       0
+#define MOTORS_BEEP_PRESCALE      5
 #define MOTORS_TIM_BEEP_CLK_FREQ  (84000000L / 5)
 #define MOTORS_POLARITY           TIM_OCPolarity_High
 
@@ -341,6 +342,9 @@ void motorsTestTask(void* params);
  *     motorsBeep(false, 0, 0); *
  * */
 void motorsBeep(int id, bool enable, uint16_t frequency, uint16_t ratio);
+
+/* Set (high, > 1281) PWM frequency for a single motor*/
+void motorsSetFrequency(int id, uint16_t frequency);
 
 /**
  * Retrieve the health test settings of the given motor. This allows us to use

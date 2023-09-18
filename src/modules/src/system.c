@@ -68,6 +68,7 @@
 #include "extrx.h"
 #include "app.h"
 #include "static_mem.h"
+#include "motor_chirp.h"
 #include "peer_localization.h"
 #include "cfassert.h"
 #include "i2cdev.h"
@@ -216,6 +217,7 @@ void systemTask(void *arg)
 #ifdef PROXIMITY_ENABLED
   proximityInit();
 #endif
+  motorSoundInit();
 
   systemRequestNRFVersion();
 
@@ -267,6 +269,10 @@ void systemTask(void *arg)
   if (soundTest() == false) {
     pass = false;
     DEBUG_PRINT("sound [FAIL]\n");
+  }
+  if (motorChirpTest() == false) {
+    pass = false;
+    DEBUG_PRINT("motorSound [FAIL]\n");
   }
   if (memTest() == false) {
     pass = false;
