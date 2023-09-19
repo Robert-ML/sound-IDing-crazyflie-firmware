@@ -69,6 +69,7 @@
 #include "app.h"
 #include "static_mem.h"
 #include "motor_chirp.h"
+#include "motor_iding.h"
 #include "peer_localization.h"
 #include "cfassert.h"
 #include "i2cdev.h"
@@ -218,6 +219,7 @@ void systemTask(void *arg)
   proximityInit();
 #endif
   motorSoundInit();
+  motorIdingInit();
 
   systemRequestNRFVersion();
 
@@ -273,6 +275,10 @@ void systemTask(void *arg)
   if (motorChirpTest() == false) {
     pass = false;
     DEBUG_PRINT("motorSound [FAIL]\n");
+  }
+  if (motorIdingTest() == false) {
+    pass = false;
+    DEBUG_PRINT("motorIding [FAIL]\n");
   }
   if (memTest() == false) {
     pass = false;

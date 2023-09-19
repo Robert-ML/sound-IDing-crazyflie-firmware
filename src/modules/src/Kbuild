@@ -59,3 +59,4 @@ obj-y += outlierfilter/
 
 # Custom files
 obj-y += motor_chirp.o
+obj-y += motor_iding.o
