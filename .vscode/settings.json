@@ -11,7 +11,19 @@
         "stdint.h": "c",
         "nrf24l01.h": "c",
         "stdbool.h": "c",
-        "uart1.h": "c"
+        "uart1.h": "c",
+        "string.h": "c",
+        "stdlib.h": "c",
+        "freertos.h": "c",
+        "timers.h": "c",
+        "worker.h": "c",
+        "param.h": "c",
+        "log.h": "c",
+        "eprintf.h": "c",
+        "stdarg.h": "c",
+        "modulation_shceme.h": "c",
+        "system_error": "c",
+        "collision_avoidance.h": "c"
     },
     "C_Cpp.errorSquiggles": "enabled",
     "C_Cpp.default.configurationProvider": "ms-vscode.cpptools-tools"

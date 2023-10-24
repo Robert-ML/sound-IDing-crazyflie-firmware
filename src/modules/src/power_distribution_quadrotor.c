@@ -85,6 +85,21 @@ static void powerDistributionLegacy(const control_t *control, motors_thrust_unca
   motorThrustUncapped->motors.m2 = control->thrust - r - p - control->yaw;
   motorThrustUncapped->motors.m3 = control->thrust + r - p + control->yaw;
   motorThrustUncapped->motors.m4 = control->thrust + r + p - control->yaw;
+
+
+  static int32_t past_val = 12000;
+
+  if (control->thrust > 2000) {
+    motorThrustUncapped->motors.m1 = past_val;
+    motorThrustUncapped->motors.m2 = past_val;
+    motorThrustUncapped->motors.m3 = past_val;
+    motorThrustUncapped->motors.m4 = past_val;
+
+    // past_val += 1;
+    // if (past_val > 18000) {
+    //   past_val = 12000;
+    // }
+  }
 }
 
 static void powerDistributionForceTorque(const control_t *control, motors_thrust_uncapped_t* motorThrustUncapped) {
@@ -118,6 +133,8 @@ static void powerDistributionForce(const control_t *control, motors_thrust_uncap
 
 void powerDistribution(const control_t *control, motors_thrust_uncapped_t* motorThrustUncapped)
 {
+  powerDistributionLegacy(control, motorThrustUncapped);
+  return;
   switch (control->controlMode) {
     case controlModeLegacy:
       powerDistributionLegacy(control, motorThrustUncapped);

@@ -60,3 +60,5 @@ obj-y += outlierfilter/
 # Custom files
 obj-y += motor_chirp.o
 obj-y += motor_iding.o
+obj-y += modulation_scheme.o
+obj-y += motor_transmission.o
