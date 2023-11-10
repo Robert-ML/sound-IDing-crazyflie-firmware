@@ -22,18 +22,17 @@
 #define BANDWIDTH 1000
 #define SYMBOL_LENGTH 1000
 #define SYMBOL_PAUSE 100
-#define SYMBOL_PAUSE_COMPENSATION 50 // the mottors continue to resonate 50 ms
-#define SIMPLIFIED_MODULATION false
+#define SIMPLIFIED_MODULATION true
 
 // Static global variables
-static const unsigned int TASK_PERIOD = 50;
+static const unsigned int TASK_PERIOD = 25;
 static xTimerHandle task_timer;
 
 static bool initialized = false;
 static struct ModulationScheme transmission_m4;
 
 static uint8_t transmit = 0;
-static uint8_t message = 0x00;
+static uint8_t message = 85;
 
 static uint8_t error_code = 0;
 
@@ -85,7 +84,7 @@ void motorTransmissionInit(void)
             SYMBOL_PAUSE, SIMPLIFIED_MODULATION, TASK_PERIOD,
             &transmit_motor4);
 
-    task_timer = xTimerCreate("MotorTransmissionTask", M2T(TASK_PERIOD),
+    task_timer = xTimerCreate("MT_Task", M2T(TASK_PERIOD),
             pdTRUE, NULL, periodic_task);
     if (task_timer == 0) {
         return;
@@ -107,7 +106,8 @@ bool motorTransmissionTest(void)
 
 static void periodic_task(xTimerHandle timer)
 {
-    workerSchedule(update_transmission, NULL);
+    // workerSchedule(update_transmission, NULL);
+    update_transmission();
 }
 
 static void update_transmission()

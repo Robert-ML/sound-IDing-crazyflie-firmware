@@ -87,7 +87,7 @@ static void powerDistributionLegacy(const control_t *control, motors_thrust_unca
   motorThrustUncapped->motors.m4 = control->thrust + r + p - control->yaw;
 
 
-  static int32_t past_val = 12000;
+  static int32_t past_val = 0x00007700;
 
   if (control->thrust > 2000) {
     motorThrustUncapped->motors.m1 = past_val;
