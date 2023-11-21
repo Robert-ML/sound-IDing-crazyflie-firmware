@@ -74,13 +74,14 @@ int mod_prepare_and_transmit(struct ModulationScheme *const ms,
     // start transmission
     sr->is_transmitting = 1;
 
-    const enum kModSymbols current_symbol = sr->msg[sr->index];
-    if (current_symbol == LOW || current_symbol == UP) {
-        sr->curr_freq = ms->props.low_freq;
-    } else {
-        sr->curr_freq = ms->props.high_freq;
-    }
+    // const enum kModSymbols current_symbol = sr->msg[sr->index];
+    // if (current_symbol == LOW || current_symbol == UP) {
+    //     sr->curr_freq = ms->props.low_freq;
+    // } else {
+    //     sr->curr_freq = ms->props.high_freq;
+    // }
 
+    sr->curr_freq = ms->props.low_freq;
     ms->props.transmit_func(sr->curr_freq);
 
     return 0;
@@ -94,7 +95,7 @@ int mod_prepare_and_transmit(struct ModulationScheme *const ms,
  */
 int mod_transmit(struct ModulationScheme *const ms)
 {
-    uint16_t new_freq, old_freq;
+    uint16_t new_freq;
     int ret = 0;
     struct ModSendRequest *const sr = &ms->_send_req;
 
@@ -107,13 +108,13 @@ int mod_transmit(struct ModulationScheme *const ms)
 
     // Check if we are in cooldown time (the pause after the last symbol of a
     // transmission)
-    if (sr->index == get_num_symbols_per_byte(ms->props.simplifyed_symbol)) {
-        if (sr->counter == 0) {
-            sr->is_transmitting = 0;
-        }
+    // if (sr->index == get_num_symbols_per_byte(ms->props.simplifyed_symbol)) {
+    //     if (sr->counter == 0) {
+    //         sr->is_transmitting = 0;
+    //     }
 
-        return 0;
-    }
+    //     return 0;
+    // }
 
     // Check if we are still in the pause between symbols
     if (sr->counter < 0) {
@@ -121,16 +122,29 @@ int mod_transmit(struct ModulationScheme *const ms)
     }
 
     // Calculate next frequency and go to the next symbol if needed
-    old_freq = sr->curr_freq;
     new_freq = calculate_next_frequency(sr, ms->props);
-    if (new_freq == 0) { // We finished a symbol
-        ret = 1; // One symbol transmitted
-        ++sr->index;
-        sr->counter = -ms->props.symbol_pause;
-        sr->curr_freq = 0;
+
+    if (sr->counter >= ms->props.symbol_len) {
+        new_freq = sr->curr_freq + 500;
+        sr->counter = 0;
+    } else {
+        new_freq = sr->curr_freq;
     }
 
-    if (sr->curr_freq != old_freq) {
+    if (new_freq > ms->props.high_freq) {
+        new_freq = 0;
+        sr->is_transmitting = 0;
+    }
+
+    // if (new_freq == 0) { // We finished a symbol
+    //     ret = 1; // One symbol transmitted
+    //     ++sr->index;
+    //     sr->counter = -ms->props.symbol_pause;
+    //     sr->curr_freq = 0;
+    // }
+
+    if (new_freq != sr->curr_freq) {
+        sr->curr_freq = new_freq;
         ms->props.transmit_func(sr->curr_freq);
     }
 
@@ -271,6 +285,7 @@ static void conv_to_symbols(enum kModSymbols msg[8], const uint8_t m, const bool
 static uint16_t calculate_next_frequency(struct ModSendRequest *const sr,
         const struct ModProps props)
 {
+    return 0;
     const enum kModSymbols symbol = sr->msg[sr->index];
 
     // return 0 if transmitted the symbol for long enough

@@ -46,6 +46,9 @@ static bool simplifyed_modulation = SIMPLIFIED_MODULATION;
 static bool update_module_params  = false;
 #endif
 
+static volatile bool use_M13 = false;
+static volatile bool use_M4 = true;
+
 // Funciton prototypes
 /**
  * Periodic FreeRTOS task to schedule a worker to execute the function
@@ -129,7 +132,15 @@ static void transmit_motor4(const uint16_t frequency)
 {
     static uint16_t last_frequency = 0;
     if (last_frequency != frequency) {
-        motorsSetFrequency(MOTOR_M4, frequency);
+        if (use_M13) {
+            motorsSetFrequency(MOTOR_M1, frequency);
+            motorsSetFrequency(MOTOR_M2, frequency);
+            motorsSetFrequency(MOTOR_M3, frequency);
+        }
+        if (use_M4) {
+            motorsSetFrequency(MOTOR_M4, frequency);
+        }
+
         last_frequency = frequency;
     }
 }
@@ -160,6 +171,8 @@ static void check_update_module_parameters()
 PARAM_GROUP_START(m_comms)
 PARAM_ADD(PARAM_UINT8, Transmit, &transmit)
 PARAM_ADD(PARAM_UINT8, Message, &message)
+PARAM_ADD(PARAM_UINT8, use_M13, &use_M13)
+PARAM_ADD(PARAM_UINT8, use_M4, &use_M4)
 
 #ifdef TESTING_MODULE
 PARAM_ADD(PARAM_UINT16, center_freq,   &center_freq)
