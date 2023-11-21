@@ -57,6 +57,9 @@ obj-y += cpx/
 obj-y += p2pDTR/
 obj-y += outlierfilter/
 
+# Custom sub-folders
+obj-y += acoustic_comms/
+
 # Custom files
 obj-y += motor_chirp.o
 obj-y += motor_iding.o

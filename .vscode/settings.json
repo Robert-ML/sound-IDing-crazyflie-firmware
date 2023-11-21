@@ -23,7 +23,16 @@
         "stdarg.h": "c",
         "modulation_shceme.h": "c",
         "system_error": "c",
-        "collision_avoidance.h": "c"
+        "collision_avoidance.h": "c",
+        "stabilizer.h": "c",
+        "mm_absolute_height.h": "c",
+        "string": "cpp",
+        "istream": "cpp",
+        "new": "cpp",
+        "ostream": "cpp",
+        "functional": "cpp",
+        "typeinfo": "cpp",
+        "acoustic_comms_scheme.h": "c"
     },
     "C_Cpp.errorSquiggles": "enabled",
     "C_Cpp.default.configurationProvider": "ms-vscode.cpptools-tools"

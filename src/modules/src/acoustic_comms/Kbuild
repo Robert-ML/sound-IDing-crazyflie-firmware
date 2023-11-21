@@ -1,0 +1,2 @@
+obj-y += acoustic_comms_scheme.o
+obj-y += humm_comms.o
