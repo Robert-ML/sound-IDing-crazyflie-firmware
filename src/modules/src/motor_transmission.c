@@ -32,7 +32,7 @@ static xTimerHandle task_timer;
 static bool initialized = false;
 static struct ModulationScheme transmission_m4;
 
-static uint8_t transmit = 0;
+static uint8_t transmit = 1;
 static uint8_t message = 0x55; // 0b01010101
 
 static uint8_t error_code = 0;
@@ -45,7 +45,7 @@ static uint16_t symbol_length     = SYMBOL_LENGTH;
 // static uint16_t symbol_pause      = SYMBOL_PAUSE;
 static bool update_module_params  = false;
 
-static bool use_m123 = false;
+static bool use_m123 = true;
 static bool use_m4   = true;
 
 #endif
@@ -113,21 +113,38 @@ static void periodic_task(xTimerHandle timer)
 }
 
 // static uint8_t stream[] = {0x00, 0x55, 0x45, 0x0C, 0xA9, 0xFF};
+// Hello world!
 static uint8_t stream[] = {0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x20, 0x57, 0x6F, 0x72, 0x6C, 0x64, 0x21};
 static uint8_t index = 0xFF;
 static bool transmitting_stream = false;
 
 static void update_transmission()
 {
+    // static int pause = 0;
+
 #ifdef TESTING_MODULE
     check_update_module_parameters();
 #endif
 
     mod_transmit(&transmission_m4);
 
+    // if (transmit == 1 && index == 0xFF) {
+    //     pause ++;
+    //     if (pause >= 400) {
+    //         pause = 0;
+    //     } else {
+    //         return;
+    //     }
+    // }
+
+
     if (transmit && !transmitting_stream) {
         transmit = 0;
         transmitting_stream = true;
+    }
+
+    if (transmit == 0) {
+        transmitting_stream = false;
     }
 
     if (transmitting_stream && mod_is_transmitting(&transmission_m4) == false) {
@@ -146,15 +163,15 @@ static void transmit_motor4(const uint32_t frequency)
 {
     static uint32_t last_frequency = 0;
     if (last_frequency != frequency) {
-        if (use_m4) {
-            motorsSetFrequency(MOTOR_M4, (uint16_t)frequency);
-        }
+        // if (use_m4) {
+        //     motorsSetFrequency(MOTOR_M4, (uint16_t)frequency);
+        // }
 
-        if (use_m123) {
-            motorsSetFrequency(MOTOR_M1, (uint16_t)frequency);
-            motorsSetFrequency(MOTOR_M2, (uint16_t)frequency);
-            motorsSetFrequency(MOTOR_M3, (uint16_t)frequency);
-        }
+        // if (use_m123) {
+        //     motorsSetFrequency(MOTOR_M1, (uint16_t)frequency);
+        //     motorsSetFrequency(MOTOR_M2, (uint16_t)frequency);
+        //     motorsSetFrequency(MOTOR_M3, (uint16_t)frequency);
+        // }
 
         last_frequency = frequency;
     }

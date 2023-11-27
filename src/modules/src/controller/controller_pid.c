@@ -80,7 +80,9 @@ void controllerPid(control_t *control, const setpoint_t *setpoint,
         }
       }
     } else if (setpoint->mode.yaw == modeAbs) {
-      attitudeDesired.yaw = setpoint->attitude.yaw;
+      if (setpoint->attitude.yaw < (float)400) {
+        attitudeDesired.yaw = setpoint->attitude.yaw;
+      }
     } else if (setpoint->mode.quat == modeAbs) {
       struct quat setpoint_quat = mkquat(setpoint->attitudeQuaternion.x, setpoint->attitudeQuaternion.y, setpoint->attitudeQuaternion.z, setpoint->attitudeQuaternion.w);
       struct vec rpy = quat2rpy(setpoint_quat);

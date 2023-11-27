@@ -109,9 +109,12 @@ static void velocityDecoder(setpoint_t *setpoint, uint8_t type, const void *data
   setpoint->velocity.y = values->vy;
   setpoint->velocity.z = values->vz;
 
-  setpoint->mode.yaw = modeVelocity;
+  // setpoint->mode.yaw = modeVelocity;
 
-  setpoint->attitudeRate.yaw = -values->yawrate;
+  // setpoint->attitudeRate.yaw = -values->yawrate;
+
+  setpoint->mode.yaw = modeAbs;
+  setpoint->attitude.yaw = values->yawrate;
 }
 
 /* zDistanceDecoder
@@ -435,7 +438,7 @@ void crtpCommanderGenericDecodeSetpoint(setpoint_t *setpoint, CRTPPacket *pk)
  * configure the maximum angle/rate output given a maximum stick input
  * for CRTP packets with emulated CPPM channels (e.g. RC transmitters connecting
  * directly to the NRF radio, often with a 4-in-1 Multimodule), or for CPPM channels
- * from an external receiver.  
+ * from an external receiver.
  */
 PARAM_GROUP_START(cppm)
 
